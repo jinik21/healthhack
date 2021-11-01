@@ -32,11 +32,13 @@ const handlesignin=(req,resp,User)=>{
                         var jsonObject = 
                 {
                     "email": result.email,
-    "name": result.name,
-    "phone": result.phone,
-    "branch": result.branch,
-    "picture": result.picture,
-    "isvalid":result.admin
+                    "firstname": result.firstname,
+                    "lastname": result.lastname,
+                    "phone": result.phone,
+                    "address": result.address,
+                    "age": result.age,
+                    "picture": result.picture,
+                    "doctor": result.doctor,
                 }
                         return resp.status(200).json(jsonObject);
                     }
