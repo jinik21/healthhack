@@ -7,7 +7,7 @@ const handlesignup=(req,resp,User)=>{
         function (err,user) {
             if(err)
             {
-                // console.log(err);
+                console.log(err);
                 return resp.status(400).json("Incorrect form submission");
             }
             else
@@ -17,7 +17,7 @@ const handlesignup=(req,resp,User)=>{
                  if (err) 
                  {
                      //console.log(err);
-                     return resp.status(400).json("Incorrect form submission");
+                     return resp.status(401).json("Incorrect form submission");
                 }
                  else{
                     var jsonObject = 
