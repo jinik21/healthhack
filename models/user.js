@@ -19,7 +19,7 @@ const userSchema = new Schema({
     required: true,
     maxLength: 13
   },
-  age: {
+  dob: {
     type: String,
     required: true
   },
