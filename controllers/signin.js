@@ -27,7 +27,7 @@ const handlesignin=(req,resp,User)=>{
                     else
                     {
                         //console.log("logged in");
-                        if((req.body.admin=='true' && result.admin==true)||(req.body.admin=='false' && result.admin==false) ){
+                        if((req.body.doctor=='true' && result.doctor==true)||(req.body.doctor=='false' && result.doctor==false) ){
                             
                         var jsonObject = 
                 {
