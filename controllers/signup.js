@@ -3,7 +3,7 @@
 const handlesignup=(req,resp,User)=>{
     // console.log(req);
     // console.log("-------------------------------------------")
-    User.register({username:req.body.email,email:req.body.email,firstname:req.body.firstname,lastname:req.body.lastname,phone:req.body.phone,age:req.body.age,address:req.body.address,state:req.body.state,city:req.body.city,pincode:req.body.pincode,picture:req.body.picture},req.body.password,
+    User.register({username:req.body.email,email:req.body.email,firstname:req.body.firstname,lastname:req.body.lastname,phone:req.body.phone,dob:req.body.dob,address:req.body.address,state:req.body.state,city:req.body.city,pincode:req.body.pincode,picture:req.body.picture},req.body.password,
         function (err,user) {
             if(err)
             {
