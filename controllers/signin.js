@@ -36,7 +36,7 @@ const handlesignin=(req,resp,User)=>{
                     "lastname": result.lastname,
                     "phone": result.phone,
                     "address": result.address,
-                    "age": result.age,
+                    "dob": result.dob,
                     "picture": result.picture,
                     "doctor": result.doctor,
                 }

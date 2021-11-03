@@ -28,7 +28,7 @@ const handlesignup=(req,resp,User)=>{
                         "lastname": result.lastname,
                         "phone": result.phone,
                         "address": result.address,
-                        "age": result.age,
+                        "dob": result.dob,
                         "picture": result.picture
                     }
                  return resp.status(200).json(jsonObject);
@@ -64,7 +64,7 @@ const handlesignup=(req,resp,User)=>{
                             "lastname": result.lastname,
                             "phone": result.phone,
                             "address": result.address,
-                            "age": result.age,
+                            "dob": result.dob,
                             "picture": result.picture
                         }
                      return resp.status(200).json(jsonObject);
