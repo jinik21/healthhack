@@ -12,6 +12,9 @@ const sessions = new Schema({
   date: {
     type: String,
   },
+  time: {
+    type: String,
+  },
   prescription: {
     type: String,
   },
@@ -22,6 +25,9 @@ const sessions = new Schema({
     type: String,
   },
   doctor_feedback: {
+    type: String,
+  },
+  title: {
     type: String,
   },
   upcoming: {
