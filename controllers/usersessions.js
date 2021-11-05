@@ -14,7 +14,7 @@ const usersessions = async (req, resp, User, Sessions) => {
         }).sort({ 'date': -1 });
         console.log(usr);
         console.log(upcoming_session);
-        return resp.json(usr);
+        return resp.json(upcoming_session);
     }
     else {
         const previous_session = await Sessions.find({
@@ -29,7 +29,7 @@ const usersessions = async (req, resp, User, Sessions) => {
         }).sort({ 'date': -1 });
         console.log(usr);
         console.log(previous_session);
-        return resp.json(usr);
+        return resp.json(previous_session);
     }
 }
 module.exports = {
