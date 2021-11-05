@@ -55,6 +55,10 @@ const userSchema = new Schema({
     default: false
   },
   doctorinfo: {
+    doctor_assigned:{
+      type:String,
+      default:null
+    },
     data: {
       yearofexperience: {
         type: String,
