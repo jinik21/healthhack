@@ -1,4 +1,3 @@
-const axios = require('axios');
 const newSession = async (req, resp, User, Sessions) => {
 
     const usr = await User.findOne({ 'email': req.body.email });

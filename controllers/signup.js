@@ -1,5 +1,3 @@
-
-
 const handlesignup=(req,resp,User)=>{
     // console.log(req);
     // console.log("-------------------------------------------")

@@ -1,5 +1,4 @@
-const axios = require('axios');
-const newSession = async (req, resp, User, Sessions) => {
+const closeSession = async (req, resp, User, Sessions) => {
 
     const usr = await User.findOne({ 'email': req.body.email });
     const session =  await Sessions.findOne({'_id':req.body.id});
@@ -21,5 +20,5 @@ const newSession = async (req, resp, User, Sessions) => {
 
 }
 module.exports = {
-    newSession: newSession
+    closeSession: closeSession
 };

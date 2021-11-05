@@ -1,5 +1,4 @@
-const axios = require('axios');
-const newSession = async (req, resp, User, Sessions) => {
+const newPrescription = async (req, resp, User, Sessions) => {
 
     const usr = await User.findOne({ 'email': req.body.email });
     const session =  await Sessions.findOne({'_id':req.body.id});
@@ -12,13 +11,13 @@ const newSession = async (req, resp, User, Sessions) => {
                 console.log("Result :", result) 
             }})
             session.save()
-        resp.json("Session Sucessfully Closed");
+        resp.json("Prescription Sucessfully added");
     }
     catch {
-        resp.json("Error while Closing Session");
+        resp.json("Error while Adding Prescription");
     }
 
 }
 module.exports = {
-    newSession: newSession
+    newPrescription: newPrescription
 };

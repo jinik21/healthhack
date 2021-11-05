@@ -1,4 +1,3 @@
-const axios = require('axios');
 const usersessions = async (req, resp, User, Sessions) => {
 
     const usr = await User.find({ 'email': req.body.email }).sort({ 'date': -1 });

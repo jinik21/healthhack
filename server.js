@@ -16,6 +16,11 @@ const userSessionSchema = require('./models/sessions');
 const userdata = require('./controllers/userdata')
 const usersessions = require('./controllers/usersessions')
 const newSession = require('./controllers/new_session')
+const closeSession = require('./controllers/close_session')
+const doctorFeedback= require('./controllers/doctor_feedback')
+const patientFeedback = require('./controllers/patient_feedback')
+const addPresciption = require('./controllers/add_prescription')
+const addNotes = require('./controllers/add_notes')
 
 
 const app = express();
@@ -67,11 +72,13 @@ app.post('/api/usersessions', (req, resp) => { usersessions.usersessions(req, re
 app.post('/api/patient_details', (req, resp) => { signup.handlesignup(req, resp, User, Sessions) })
 
 app.post('/api/new_session', (req, resp) => { newSession.newSession(req, resp, User, Sessions) })
-app.post('/api/close_session', (req, resp) => { signup.handlesignup(req, resp, User, Sessions) })
-app.post('/api/assign_doctor', (req, resp) => { signup.handlesignup(req, resp, User, Sessions) })
-app.post('/api/patient_feedback', (req, resp) => { signup.handlesignup(req, resp, User, Sessions) })
-app.post('/api/doctor_feedback', (req, resp) => { signup.handlesignup(req, resp, User, Sessions) })
+app.post('/api/close_session', (req, resp) => { closeSession.closeSession(req, resp, User, Sessions) })
+app.post('/api/patient_feedback', (req, resp) => { patientFeedback.newPatientFeedback(req, resp, User, Sessions) })
+app.post('/api/doctor_feedback', (req, resp) => { doctorFeedback.newDoctorFeedback(req, resp, User, Sessions) })
+app.post('/api/add_presciption', (req, resp) => { addPresciption.newPrescription(req, resp, User, Sessions) })
+app.post('/api/add_notes', (req, resp) => { addNotes.newNotes(req, resp, User, Sessions) })
 
+app.post('/api/assign_doctor', (req, resp) => { signup.handlesignup(req, resp, User, Sessions) })
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {

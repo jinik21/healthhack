@@ -1,5 +1,3 @@
-// const request = require('request');
-const axios = require('axios');
 const userdata = async (req, resp, User) => {
 
     const usr = await User.findOne({ 'email': req.body.email });
