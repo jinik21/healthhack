@@ -11,7 +11,7 @@ const usersessions = async (req, resp, User, Sessions) => {
                     upcoming: true
                 }
             ]
-        }).sort({ 'date': -1 });
+        }).sort({ 'date': 1 });
         console.log(usr);
         console.log(upcoming_session);
         return resp.json(upcoming_session);

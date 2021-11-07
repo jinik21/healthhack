@@ -102,50 +102,21 @@ app.get("/api/agora-call/token", middleware, (req, res) => {
 });
 
 //Routes
+app.get('/', (req, resp) => { resp.send('working ') })
+app.post('/api/signin', (req, resp) => { signin.handlesignin(req, resp, User) })
+app.post('/api/signup', (req, resp) => { signup.handlesignup(req, resp, User) })
+app.post('/api/userdata', (req, resp) => { userdata.userdata(req, resp, User) })
+app.post('/api/usersessions', (req, resp) => { usersessions.usersessions(req, resp, User, Sessions) })
+app.post('/api/get_doctors', (req, resp) => { getDoctor.getDoctor(req, resp, User) })
+app.post('/api/patient_details', (req, resp) => { signup.handlesignup(req, resp, User, Sessions) })
 
-app.get("/", (req, resp) => {
-  resp.send("working ");
-});
-app.post("/api/signin", (req, resp) => {
-  signin.handlesignin(req, resp, User);
-});
-app.post("/api/signup", (req, resp) => {
-  signup.handlesignup(req, resp, User);
-});
-app.post("/api/userdata", (req, resp) => {
-  userdata.userdata(req, resp, User);
-});
-app.post("/api/usersessions", (req, resp) => {
-  usersessions.usersessions(req, resp, User, Sessions);
-});
-app.post("/api/get_doctors", (req, resp) => {
-  getDoctor.getDoctor(req, resp, User);
-});
-app.post("/api/patient_details", (req, resp) => {
-  signup.handlesignup(req, resp, User, Sessions);
-});
-
-app.post("/api/new_session", (req, resp) => {
-  newSession.newSession(req, resp, User, Sessions);
-});
-app.post("/api/close_session", (req, resp) => {
-  closeSession.closeSession(req, resp, User, Sessions);
-});
-app.post("/api/patient_feedback", (req, resp) => {
-  patientFeedback.newPatientFeedback(req, resp, User, Sessions);
-});
-app.post("/api/doctor_feedback", (req, resp) => {
-  doctorFeedback.newDoctorFeedback(req, resp, User, Sessions);
-});
-app.post("/api/add_presciption", (req, resp) => {
-  addPresciption.newPrescription(req, resp, User, Sessions);
-});
-app.post("/api/add_notes", (req, resp) => {
-  addNotes.newNotes(req, resp, User, Sessions);
-});
-app.post("/api/assign_doctor", (req, resp) => {
-  assignDoctor.assignDoctor(req, resp, User);
-});
+app.post('/api/new_session', (req, resp) => { newSession.newSession(req, resp, User, Sessions) })
+app.post('/api/close_session', (req, resp) => { closeSession.closeSession(req, resp, User, Sessions) })
+app.post('/api/patient_feedback', (req, resp) => { patientFeedback.newPatientFeedback(req, resp, User, Sessions) })
+app.post('/api/doctor_feedback', (req, resp) => { doctorFeedback.newDoctorFeedback(req, resp, User, Sessions) })
+app.post('/api/add_presciption', (req, resp) => { addPresciption.newPrescription(req, resp, User, Sessions) })
+app.post('/api/add_notes', (req, resp) => { addNotes.newNotes(req, resp, User, Sessions) })
+app.post('/api/assign_doctor', (req, resp) => { assignDoctor.assignDoctor(req, resp, User) })
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
