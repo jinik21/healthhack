@@ -33,6 +33,10 @@ const sessions = new Schema({
   upcoming: {
     type: Boolean,
     default:true
-  }
+  },
+  status: {
+    type: string,
+    default:"0"
+  },
 });
 module.exports = sessions;
