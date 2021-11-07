@@ -27,6 +27,7 @@ const patientFeedback = require("./controllers/patient_feedback");
 const addPresciption = require("./controllers/add_prescription");
 const addNotes = require("./controllers/add_notes");
 const getDoctor = require("./controllers/doctor_list");
+const getPatient = require("./controllers/patient_list");
 const assignDoctor = require("./controllers/assign_doctor");
 
 const app = express();
@@ -108,6 +109,7 @@ app.post('/api/signup', (req, resp) => { signup.handlesignup(req, resp, User) })
 app.post('/api/userdata', (req, resp) => { userdata.userdata(req, resp, User) })
 app.post('/api/usersessions', (req, resp) => { usersessions.usersessions(req, resp, User, Sessions) })
 app.post('/api/get_doctors', (req, resp) => { getDoctor.getDoctor(req, resp, User) })
+app.post('/api/get_patient', (req, resp) => { getPatient.getPatient(req, resp, User) })
 app.post('/api/patient_details', (req, resp) => { signup.handlesignup(req, resp, User, Sessions) })
 
 app.post('/api/new_session', (req, resp) => { newSession.newSession(req, resp, User, Sessions) })
