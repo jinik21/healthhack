@@ -29,6 +29,7 @@ const addNotes = require("./controllers/add_notes");
 const getDoctor = require("./controllers/doctor_list");
 const getPatient = require("./controllers/patient_list");
 const assignDoctor = require("./controllers/assign_doctor");
+const updateProfile = require("./controllers/update_profile");
 
 const app = express();
 app.use(bodyParser.json());
@@ -119,6 +120,8 @@ app.post('/api/doctor_feedback', (req, resp) => { doctorFeedback.newDoctorFeedba
 app.post('/api/add_presciption', (req, resp) => { addPresciption.newPrescription(req, resp, User, Sessions) })
 app.post('/api/add_notes', (req, resp) => { addNotes.newNotes(req, resp, User, Sessions) })
 app.post('/api/assign_doctor', (req, resp) => { assignDoctor.assignDoctor(req, resp, User) })
+app.post('/api/update_profile', (req, resp) => { updateProfile.updateProfile(req, resp, User) })
+
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
