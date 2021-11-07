@@ -10,6 +10,6 @@ module.exports = {
   },
   agora: {
     APP_ID: "370cc8b63bac46d381f17915984b033d",
-    APP_CERTIFICATE: "bb68c223bfb44245aa9282556f142618",
+    APP_CERTIFICATE: "3b45c4e6524742c2ae81736ffbc6f673",
   },
 };
