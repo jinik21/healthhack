@@ -19,17 +19,8 @@ const handlesignup=(req,resp,User)=>{
                      return resp.status(401).json("Incorrect form submission");
                 }
                  else{
-                    var jsonObject = 
-                    {
-                        "email": result.email,
-                        "firstname": result.firstname,
-                        "lastname": result.lastname,
-                        "phone": result.phone,
-                        "address": result.address,
-                        "dob": result.dob,
-                        "picture": result.picture
-                    }
-                 return resp.status(200).json(jsonObject);
+                    
+                 return resp.status(200).json(result);
                  }
                 });
             }
@@ -55,17 +46,8 @@ const handlesignup=(req,resp,User)=>{
                          return resp.status(401).json("Incorrect form submission");
                     }
                      else{
-                        var jsonObject = 
-                        {
-                            "email": result.email,
-                            "firstname": result.firstname,
-                            "lastname": result.lastname,
-                            "phone": result.phone,
-                            "address": result.address,
-                            "dob": result.dob,
-                            "picture": result.picture
-                        }
-                     return resp.status(200).json(jsonObject);
+                       
+                     return resp.status(200).json(result);
                      }
                     });
                 }

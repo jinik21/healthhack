@@ -28,19 +28,7 @@ const handlesignin=(req,resp,User)=>{
                     {
                         //console.log("logged in");
                         if((req.body.doctor=='true' && result.doctor==true)||(req.body.doctor=='false' && result.doctor==false) ){
-                            
-                        var jsonObject = 
-                {
-                    "email": result.email,
-                    "firstname": result.firstname,
-                    "lastname": result.lastname,
-                    "phone": result.phone,
-                    "address": result.address,
-                    "dob": result.dob,
-                    "picture": result.picture,
-                    "doctor": result.doctor,
-                }
-                        return resp.status(200).json(jsonObject);
+                        return resp.status(200).json(result);
                     }
                     else{
                         return resp.status(400).json("Not Logged in");
