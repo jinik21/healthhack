@@ -35,7 +35,7 @@ const sessions = new Schema({
     default:true
   },
   status: {
-    type: string,
+    type: String,
     default:"0"
   },
 });
