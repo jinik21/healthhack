@@ -31,6 +31,7 @@ const getPatient = require("./controllers/patient_list");
 const assignDoctor = require("./controllers/assign_doctor");
 const updateProfile = require("./controllers/update_profile");
 const sessionStatus=require("./controllers/session_status")
+const getSummary=require("./controllers/get_summary")
 
 const app = express();
 app.use(bodyParser.json());
@@ -104,6 +105,8 @@ app.post('/api/usersessions', (req, resp) => { usersessions.usersessions(req, re
 app.post('/api/get_doctors', (req, resp) => { getDoctor.getDoctor(req, resp, User) })
 app.post('/api/get_patient', (req, resp) => { getPatient.getPatient(req, resp, User) })
 app.post('/api/patient_details', (req, resp) => { signup.handlesignup(req, resp, User, Sessions) })
+app.post('/api/summary', (req, resp) => { getSummary.getSummary(req, resp) })
+
 
 app.post('/api/new_session', (req, resp) => { newSession.newSession(req, resp, User, Sessions) })
 app.post('/api/close_session', (req, resp) => { closeSession.closeSession(req, resp, User, Sessions) })
