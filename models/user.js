@@ -76,6 +76,12 @@ const userSchema = new Schema({
         default:"-"
       }
     }
+  },
+  routines:{
+    type:[{
+      date:String,
+      link:String
+    }]
   }
 });
 module.exports = userSchema;

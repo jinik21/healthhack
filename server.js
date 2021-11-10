@@ -32,6 +32,8 @@ const assignDoctor = require("./controllers/assign_doctor");
 const updateProfile = require("./controllers/update_profile");
 const sessionStatus=require("./controllers/session_status")
 const getSummary=require("./controllers/get_summary")
+const newRoutine=require("./controllers/add_routines")
+const userRoutines = require("./controllers/get_routines");
 
 const app = express();
 app.use(bodyParser.json());
@@ -117,6 +119,8 @@ app.post('/api/add_notes', (req, resp) => { addNotes.newNotes(req, resp, User, S
 app.post('/api/session_status', (req, resp) => { sessionStatus.sessionStatus(req, resp, User, Sessions) })
 app.post('/api/assign_doctor', (req, resp) => { assignDoctor.assignDoctor(req, resp, User) })
 app.post('/api/update_profile', (req, resp) => { updateProfile.updateProfile(req, resp, User) })
+app.post('/api/add_routine', (req, resp) => { newRoutine.newRoutine(req, resp, User) })
+app.post('/api/get_routine', (req, resp) => { userRoutines.userRoutines(req, resp, User) })
 
 
 const port = process.env.PORT || 3001;
