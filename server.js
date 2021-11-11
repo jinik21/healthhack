@@ -7,9 +7,12 @@ const passport_mongoose = require("passport-local-mongoose");
 const mongoose = require("mongoose");
 const db = require("./config/keys").mongodb.mongoURI;
 const ibm = require("./config/keys").ibm_key;
-
+const RouteMobile = require("./config/keys").routeMobile;
+const firebase = require("./config/keys").firebase;
+const axios = require('axios');
 const agora = require("./config/keys").agora;
 const middleware = require("./middleware/agoraMiddleware");
+const cron = require('node-cron');
 const { RtcTokenBuilder, RtcRole } = require("agora-access-token");
 
 const { IamTokenManager } = require("ibm-watson/auth");
@@ -30,10 +33,15 @@ const getDoctor = require("./controllers/doctor_list");
 const getPatient = require("./controllers/patient_list");
 const assignDoctor = require("./controllers/assign_doctor");
 const updateProfile = require("./controllers/update_profile");
-const sessionStatus=require("./controllers/session_status")
-const getSummary=require("./controllers/get_summary")
-const newRoutine=require("./controllers/add_routines")
+const sessionStatus = require("./controllers/session_status")
+const getSummary = require("./controllers/get_summary")
+const newRoutine = require("./controllers/add_routines")
 const userRoutines = require("./controllers/get_routines");
+const sessionEmail = require("./controllers/send_email")
+const sessionSMS = require("./controllers/send_message")
+const sessionWhatsapp = require("./controllers/send_whatsapp")
+const adminData = require("./controllers/adminpaneldata")
+
 
 const app = express();
 app.use(bodyParser.json());
@@ -98,6 +106,35 @@ app.get("/api/agora-call/token", middleware, (req, res) => {
   return res.json({ token: token });
 });
 
+// SMTP user register
+app.get("/api/smtp-user", (req, res) => {
+  const data = {
+    "owner_id": RouteMobile.Email.Username,
+    "token": RouteMobile.Email.Password,
+    "total_limit": 1000,
+    "hourly_limit": 100
+  }
+  var config = {
+    method: 'post',
+    url: 'https://rapidemail.rmlconnect.net/v1.0/settings/addSmtp',
+    headers: {},
+    data: data
+  };
+  // console.log(data)
+
+  axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+      return res.json(response.data);
+    })
+    .catch(function (error) {
+      console.log("error" + error);
+      return res.json(JSON.stringify(response.data));
+    });
+});
+app.get("/api/firebase", (req, res) => {
+  return res.json(firebase)
+});
 //Routes
 app.get('/', (req, resp) => { resp.send('working ') })
 app.post('/api/signin', (req, resp) => { signin.handlesignin(req, resp, User) })
@@ -108,7 +145,10 @@ app.post('/api/get_doctors', (req, resp) => { getDoctor.getDoctor(req, resp, Use
 app.post('/api/get_patient', (req, resp) => { getPatient.getPatient(req, resp, User) })
 app.post('/api/patient_details', (req, resp) => { signup.handlesignup(req, resp, User, Sessions) })
 app.post('/api/summary', (req, resp) => { getSummary.getSummary(req, resp) })
-
+app.post('/api/send_email', (req, resp) => { sessionEmail.sessionEmail(req, resp, User, Sessions, RouteMobile.Email, RouteMobile.Email.smtpUser) })
+app.post('/api/send_meassage', (req, resp) => { sessionSMS.sessionSMS(req, resp, User, Sessions, RouteMobile.SMS) })
+app.post('/api/send_whatsapp', (req, resp) => { sessionWhatsapp.sessionWhatsapp(req, resp, User, Sessions, RouteMobile.Whatsapp) })
+app.get('/api/adminpaneldata', (req, resp) => { adminData.adminData(req, resp, User, Sessions) })
 
 app.post('/api/new_session', (req, resp) => { newSession.newSession(req, resp, User, Sessions) })
 app.post('/api/close_session', (req, resp) => { closeSession.closeSession(req, resp, User, Sessions) })
@@ -122,6 +162,86 @@ app.post('/api/update_profile', (req, resp) => { updateProfile.updateProfile(req
 app.post('/api/add_routine', (req, resp) => { newRoutine.newRoutine(req, resp, User) })
 app.post('/api/get_routine', (req, resp) => { userRoutines.userRoutines(req, resp, User) })
 
+//cron-jobs
+// cron.schedule('*/5 * * * *', async function () {
+//   console.log('---------------------');
+//   console.log('Running Cron Job');
+//   var date = new Date()
+//   var day = date.getDate();
+//   var month = date.getMonth() + 1;
+//   var year = date.getFullYear();
+//   var today = year + "-" + month + "-" + day;
+//   // console.log(today)
+//   const upcoming_session = await Sessions.find({
+//     $and: [
+//       {
+//         'date': today
+//       },
+//       {
+//         'upcoming': true
+//       }
+//     ]
+//   }).sort({ 'time': 1 });
+//   for (let i = 0; i < upcoming_session.length; i++) {
+//     if (Number(upcoming_session[i].time.split(":")[0]) === date.getHours() && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes()<= 5 && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes() >= 0) {
+//       const url1="http://localhost:3001/api/send_email";
+//       const url2="http://localhost:3001/api/send_meassage";
+//       const url3="http://localhost:3001/api/send_whatsapp";
+//       const Option = {
+//         method: 'post',
+//         url: url1,
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//         data: {
+//           id: upcoming_session[i]._id
+//         }
+//       };
+//       const Option1 = {
+//         method: 'post',
+//         url: url2,
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//         data: {
+//           id: upcoming_session[i]._id
+//         }
+//       };
+//       const Option2 = {
+//         method: 'post',
+//         url: url3,
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//         data: {
+//           id: upcoming_session[i]._id
+//         }
+//       };
+//       axios(Option)
+//         .then(function (response) {
+//           console.log(JSON.stringify(response.data));
+//         })
+//         .catch(function (error) {
+//           console.log(error);
+//         });
+//         axios(Option1)
+//         .then(function (response) {
+//           console.log(JSON.stringify(response.data));
+//         })
+//         .catch(function (error) {
+//           console.log(error);
+//         });
+//         axios(Option2)
+//         .then(function (response) {
+//           console.log(JSON.stringify(response.data));
+//         })
+//         .catch(function (error) {
+//           console.log(error);
+//         });
+//         console.log("All sent")
+//     }
+//   }
+// });
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {

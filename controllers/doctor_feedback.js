@@ -4,7 +4,7 @@ const newDoctorFeedback = async (req, resp, User, Sessions) => {
     const session =  await Sessions.findOne({'_id':req.body.id});
     try {
 
-        session.update({doctor_feedback:req.body.doctor_feedback},function (err, result) {
+        session.update({doctor_feedback:req.body.doctor_feedback,progress_rating:req.body.progress_rating},function (err, result) {
             if (err){
                 console.log(err)
             }else{

@@ -27,6 +27,9 @@ const sessions = new Schema({
   doctor_feedback: {
     type: String,
   },
+  progress_rating:{
+    type:Number
+  },
   title: {
     type: String,
   },
