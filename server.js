@@ -14,9 +14,7 @@ const agora = require("./config/keys").agora;
 const middleware = require("./middleware/agoraMiddleware");
 const cron = require('node-cron');
 const { RtcTokenBuilder, RtcRole } = require("agora-access-token");
-
 const { IamTokenManager } = require("ibm-watson/auth");
-
 const signin = require("./controllers/signin");
 const signup = require("./controllers/signup");
 const Schema = require("./models/user");
@@ -41,7 +39,7 @@ const sessionEmail = require("./controllers/send_email")
 const sessionSMS = require("./controllers/send_message")
 const sessionWhatsapp = require("./controllers/send_whatsapp")
 const adminData = require("./controllers/adminpaneldata")
-
+const sessionDetail= require("./controllers/session_detail")
 
 const app = express();
 app.use(bodyParser.json());
@@ -149,7 +147,6 @@ app.post('/api/send_email', (req, resp) => { sessionEmail.sessionEmail(req, resp
 app.post('/api/send_meassage', (req, resp) => { sessionSMS.sessionSMS(req, resp, User, Sessions, RouteMobile.SMS) })
 app.post('/api/send_whatsapp', (req, resp) => { sessionWhatsapp.sessionWhatsapp(req, resp, User, Sessions, RouteMobile.Whatsapp) })
 app.get('/api/adminpaneldata', (req, resp) => { adminData.adminData(req, resp, User, Sessions) })
-
 app.post('/api/new_session', (req, resp) => { newSession.newSession(req, resp, User, Sessions) })
 app.post('/api/close_session', (req, resp) => { closeSession.closeSession(req, resp, User, Sessions) })
 app.post('/api/patient_feedback', (req, resp) => { patientFeedback.newPatientFeedback(req, resp, User, Sessions) })
@@ -161,6 +158,9 @@ app.post('/api/assign_doctor', (req, resp) => { assignDoctor.assignDoctor(req, r
 app.post('/api/update_profile', (req, resp) => { updateProfile.updateProfile(req, resp, User) })
 app.post('/api/add_routine', (req, resp) => { newRoutine.newRoutine(req, resp, User) })
 app.post('/api/get_routine', (req, resp) => { userRoutines.userRoutines(req, resp, User) })
+app.post('/api/session_detail', (req, resp) => { sessionStatus.sessionStatus(req, resp, User, Sessions) })
+app.post('/api/session', (req, resp) => { sessionDetail.sessionDetail(req, resp, Sessions) })
+
 
 //cron-jobs
 // cron.schedule('*/5 * * * *', async function () {
