@@ -23,21 +23,7 @@ const sessionEmail = async (req, resp, User, Sessions, routeMobile,smtpUser) => 
             "headers": {
                 "Reply-To": "noreply@rapidemail.rmlconnect.net",
                 "X-Unique-Id": session._id
-            },
-            // "attachments": [
-            //     {
-            //         "type": "text/plain",
-            //         "name": "myfile.txt",
-            //         "content": "Please use Base64 encryption code here"
-            //     }
-            // ],
-            // "images": [
-            //     {
-            //         "type": "image/png",
-            //         "name": "IMAGECID",
-            //         "content": "ZXhhbXBsZSBmaWxl"
-            //     }
-            // ]
+            }
         }
     }
     // console.log(data)

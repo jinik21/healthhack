@@ -40,7 +40,7 @@ const sessionWhatsapp = async (req, resp, User, Sessions, routeMobile) => {
         })
         .catch(function (error) {
             console.log(error);
-            return resp.json(response.data);
+            return resp.json(error.data);
         });
 
 }

@@ -40,6 +40,8 @@ const sessionSMS = require("./controllers/send_message")
 const sessionWhatsapp = require("./controllers/send_whatsapp")
 const adminData = require("./controllers/adminpaneldata")
 const sessionDetail= require("./controllers/session_detail")
+const sessioncustomSMS = require("./controllers/send_custom_message")
+const sessionCall = require("./controllers/send_voice_call")
 
 const app = express();
 app.use(bodyParser.json());
@@ -160,88 +162,108 @@ app.post('/api/add_routine', (req, resp) => { newRoutine.newRoutine(req, resp, U
 app.post('/api/get_routine', (req, resp) => { userRoutines.userRoutines(req, resp, User) })
 app.post('/api/session_detail', (req, resp) => { sessionStatus.sessionStatus(req, resp, User, Sessions) })
 app.post('/api/session', (req, resp) => { sessionDetail.sessionDetail(req, resp, Sessions) })
+app.post('/api/send_custom_meassage', (req, resp) => { sessioncustomSMS.sessioncustomSMS(req, resp, User, Sessions, RouteMobile.SMS) })
+app.post('/api/send_call', (req, resp) => { sessionCall.sessionCall(req, resp, User, Sessions, RouteMobile.Voice) })
 
 
-//cron-jobs
-// cron.schedule('*/5 * * * *', async function () {
-//   console.log('---------------------');
-//   console.log('Running Cron Job');
-//   var date = new Date()
-//   var day = date.getDate();
-//   var month = date.getMonth() + 1;
-//   var year = date.getFullYear();
-//   var today = year + "-" + month + "-" + day;
-//   // console.log(today)
-//   const upcoming_session = await Sessions.find({
-//     $and: [
-//       {
-//         'date': today
-//       },
-//       {
-//         'upcoming': true
-//       }
-//     ]
-//   }).sort({ 'time': 1 });
-//   for (let i = 0; i < upcoming_session.length; i++) {
-//     if (Number(upcoming_session[i].time.split(":")[0]) === date.getHours() && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes()<= 5 && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes() >= 0) {
-//       const url1="http://localhost:3001/api/send_email";
-//       const url2="http://localhost:3001/api/send_meassage";
-//       const url3="http://localhost:3001/api/send_whatsapp";
-//       const Option = {
-//         method: 'post',
-//         url: url1,
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//         data: {
-//           id: upcoming_session[i]._id
-//         }
-//       };
-//       const Option1 = {
-//         method: 'post',
-//         url: url2,
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//         data: {
-//           id: upcoming_session[i]._id
-//         }
-//       };
-//       const Option2 = {
-//         method: 'post',
-//         url: url3,
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//         data: {
-//           id: upcoming_session[i]._id
-//         }
-//       };
-//       axios(Option)
-//         .then(function (response) {
-//           console.log(JSON.stringify(response.data));
-//         })
-//         .catch(function (error) {
-//           console.log(error);
-//         });
-//         axios(Option1)
-//         .then(function (response) {
-//           console.log(JSON.stringify(response.data));
-//         })
-//         .catch(function (error) {
-//           console.log(error);
-//         });
-//         axios(Option2)
-//         .then(function (response) {
-//           console.log(JSON.stringify(response.data));
-//         })
-//         .catch(function (error) {
-//           console.log(error);
-//         });
-//         console.log("All sent")
-//     }
-//   }
-// });
+// cron-jobs
+cron.schedule('*/5 * * * *', async function () {
+  console.log('---------------------');
+  console.log('Running Cron Job');
+  var date = new Date()
+  var day = date.getDate();
+  var month = date.getMonth() + 1;
+  var year = date.getFullYear();
+  var today = year + "-" + month + "-" + day;
+  // console.log(today)
+  const upcoming_session = await Sessions.find({
+    $and: [
+      {
+        'date': today
+      },
+      {
+        'upcoming': true
+      }
+    ]
+  }).sort({ 'time': 1 });
+  for (let i = 0; i < upcoming_session.length; i++) {
+    if (Number(upcoming_session[i].time.split(":")[0]) === date.getHours() && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes()<= 5 && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes() >= 0) {
+      const url1="http://127.0.0.1:3001/api/send_email";
+      const url2="http://127.0.0.1:3001/api/send_meassage";
+      const url3="http://127.0.0.1:3001/api/send_whatsapp";
+      const url4="http://127.0.0.1:3001/api/send_call";
+      const Option = {
+        method: 'post',
+        url: url1,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: {
+          id: upcoming_session[i]._id
+        }
+      };
+      const Option1 = {
+        method: 'post',
+        url: url2,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: {
+          id: upcoming_session[i]._id
+        }
+      };
+      const Option2 = {
+        method: 'post',
+        url: url3,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: {
+          id: upcoming_session[i]._id
+        }
+      };
+      const Option3 = {
+        method: 'post',
+        url: url4,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: {
+          id: upcoming_session[i]._id
+        }
+      };
+      axios(Option)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        axios(Option1)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        axios(Option2)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        axios(Option3)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        console.log("All sent")
+    }
+  }
+});
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {

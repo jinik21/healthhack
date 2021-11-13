@@ -23,11 +23,12 @@ module.exports = {
     },
     SMS:{
       Username:"rapid-QYvH3248410000",
-      Password:"617bf1d8245383001100f7ef"
+      Password:"617bf1d8245383001100f7ef",
     },
     Voice:{
       Username:"u004",
-      Password:"IEVM1MV73J5QWR6H"
+      Password:"IEVM1MV73J5QWR6H",
+      PlanID:"6"
     },    
     Whatsapp:{
       token:"617bf1d8245383001100f7ef"
