@@ -39,7 +39,7 @@ const handlesignup = (req, resp, User) => {
                                 const url2 = "https://shrink4shrink.herokuapp.com/api/send_custom_email";
                                 const Option2 = {
                                     method: 'post',
-                                    url: url1,
+                                    url: url2,
                                     headers: {
                                         'Content-Type': 'application/json'
                                     },
