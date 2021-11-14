@@ -188,7 +188,7 @@ cron.schedule('*/5 * * * *', async function () {
     ]
   }).sort({ 'time': 1 });
   for (let i = 0; i < upcoming_session.length; i++) {
-    if (Number(upcoming_session[i].time.split(":")[0]) === date.getHours() && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes()<= 5 && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes() >= 0) {
+    if (Number(upcoming_session[i].time.split(":")[0]) === date.getHours()+5 && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes()-30<= 5 && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes()-30 >= 0) {
       const url1="https://shrink4shrink.herokuapp.com/api/send_email";
       const url2="https://shrink4shrink.herokuapp.com/api/send_meassage";
       const url3="https://shrink4shrink.herokuapp.com/api/send_whatsapp";
