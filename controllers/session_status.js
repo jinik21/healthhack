@@ -14,7 +14,7 @@ const sessionStatus = async (req, resp, User, Sessions) => {
                 }
             })
             session.save()
-            const url1 = "http://127.0.0.1:3001/api/send_custom_meassage";
+            const url1 = "https://shrink4shrink.herokuapp.com/api/send_custom_meassage";
             const Option = {
                 method: 'post',
                 url: url1,

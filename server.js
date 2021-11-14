@@ -42,7 +42,7 @@ const adminData = require("./controllers/adminpaneldata")
 const sessionDetail= require("./controllers/session_detail")
 const sessioncustomSMS = require("./controllers/send_custom_message")
 const sessionCall = require("./controllers/send_voice_call")
-
+const sessioncustomEmail=require("./controllers/send_custom_email")
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
@@ -164,6 +164,7 @@ app.post('/api/session_detail', (req, resp) => { sessionStatus.sessionStatus(req
 app.post('/api/session', (req, resp) => { sessionDetail.sessionDetail(req, resp, Sessions) })
 app.post('/api/send_custom_meassage', (req, resp) => { sessioncustomSMS.sessioncustomSMS(req, resp, User, Sessions, RouteMobile.SMS) })
 app.post('/api/send_call', (req, resp) => { sessionCall.sessionCall(req, resp, User, Sessions, RouteMobile.Voice) })
+app.post('/api/send_custom_email', (req, resp) => { sessioncustomEmail.sessioncustomEmail(req, resp, User, Sessions, RouteMobile.Email, RouteMobile.Email.smtpUser) })
 
 
 // cron-jobs
@@ -188,10 +189,10 @@ cron.schedule('*/5 * * * *', async function () {
   }).sort({ 'time': 1 });
   for (let i = 0; i < upcoming_session.length; i++) {
     if (Number(upcoming_session[i].time.split(":")[0]) === date.getHours() && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes()<= 5 && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes() >= 0) {
-      const url1="http://127.0.0.1:3001/api/send_email";
-      const url2="http://127.0.0.1:3001/api/send_meassage";
-      const url3="http://127.0.0.1:3001/api/send_whatsapp";
-      const url4="http://127.0.0.1:3001/api/send_call";
+      const url1="https://shrink4shrink.herokuapp.com/api/send_email";
+      const url2="https://shrink4shrink.herokuapp.com/api/send_meassage";
+      const url3="https://shrink4shrink.herokuapp.com/api/send_whatsapp";
+      const url4="https://shrink4shrink.herokuapp.com/api/send_call";
       const Option = {
         method: 'post',
         url: url1,
