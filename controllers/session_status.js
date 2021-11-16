@@ -14,25 +14,7 @@ const sessionStatus = async (req, resp, User, Sessions) => {
                 }
             })
             session.save()
-            const url1 = "https://shrink4shrink.herokuapp.com/api/send_custom_meassage";
-            const Option = {
-                method: 'post',
-                url: url1,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    id: session._id,
-                    sessionAccept: true
-                }
-            };
-            axios(Option)
-                .then(function (response) {
-                    console.log(JSON.stringify(response.data));
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            
             resp.json("Session Accepted");
         }
         else if (req.body.status == '-1') {
