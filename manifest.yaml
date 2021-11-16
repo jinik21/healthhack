@@ -1,5 +1,8 @@
 applications:
   - name: shrink4shrinkbackend
 memory: 128M
+path: ./
+command: node server.js
+buildpack: nodejs_buildpack
 routes:
   - route: shrink4shrinkbackend.eu-gb.cf.appdomain.cloud

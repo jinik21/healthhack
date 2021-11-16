@@ -4,9 +4,12 @@
   "description": "Shrink4shrink",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "node": ">=11.0.0"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jinik21/s4sbackend.git"
