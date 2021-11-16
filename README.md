@@ -55,7 +55,7 @@ In the session(video call) , using IBM speech to text and summarizer API, platfo
 
 
 ## Live Demo at:
-- https://shrink4shrink.netlify.app/  (Frontend)
+- https://shrink4shrink.eu-gb.cf.appdomain.cloud/ (Frontend)
 - https://shrink4shrinkbackend.eu-gb.cf.appdomain.cloud/ (Backend)
 
 ## Our Repositories:

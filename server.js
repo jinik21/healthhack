@@ -171,7 +171,7 @@ cron.schedule('*/5 * * * *', async function () {
       //     to: 'RECEIVEREMAILS', // list of receivers
       //     subject: 'Node Contact Request', // Subject line
       //     text:  "Reminder For Session Scheduled at " + session.time + ".Connect Soon", // plain text body
-      //     html:  "<h1>Reminder</h1>Hi "+usr.firstname +" "+ usr.lastname+",<br>Your session is scheduled at " + session.time + ".Join Now at: <a href=https://shrink4shrink.netlify.app/login><h3>S4S</h3></a>" // html body
+      //     html:  "<h1>Reminder</h1>Hi "+usr.firstname +" "+ usr.lastname+",<br>Your session is scheduled at " + session.time + ".Join Now at: <a href=https://shrink4shrink.eu-gb.cf.appdomain.cloud//login><h3>S4S</h3></a>" // html body
       // };
       // transporter.sendMail(mailOptions, (error, info) => {
       //     if (error) {
