@@ -1,0 +1,7 @@
+applications:
+  - name: shrink4shrink
+memory: 128M
+path: build/
+buildpack: staticfile_buildpack 
+routes:
+  - route: shrink4shrinkbackend.eu-gb.cf.appdomain.cloud
