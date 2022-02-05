@@ -8,11 +8,15 @@ const mongoose = require("mongoose");
 const db = require("./config/keys").mongodb.mongoURI;
 const ibm = require("./config/keys").ibm_key;
 const firebase = require("./config/keys").firebase;
-const axios = require('axios');
+const axios = require("axios");
 const agora = require("./config/keys").agora;
 const middleware = require("./middleware/agoraMiddleware");
-const cron = require('node-cron');
-const { RtcTokenBuilder, RtcRole } = require("agora-access-token");
+const cron = require("node-cron");
+const {
+  RtcTokenBuilder,
+  RtcRole,
+  RtmTokenBuilder,
+} = require("agora-access-token");
 const { IamTokenManager } = require("ibm-watson/auth");
 const signin = require("./controllers/signin");
 const signup = require("./controllers/signup");
@@ -30,12 +34,12 @@ const getDoctor = require("./controllers/doctor_list");
 const getPatient = require("./controllers/patient_list");
 const assignDoctor = require("./controllers/assign_doctor");
 const updateProfile = require("./controllers/update_profile");
-const sessionStatus = require("./controllers/session_status")
-const getSummary = require("./controllers/get_summary")
-const newRoutine = require("./controllers/add_routines")
+const sessionStatus = require("./controllers/session_status");
+const getSummary = require("./controllers/get_summary");
+const newRoutine = require("./controllers/add_routines");
 const userRoutines = require("./controllers/get_routines");
-const adminData = require("./controllers/adminpaneldata")
-const sessionDetail= require("./controllers/session_detail")
+const adminData = require("./controllers/adminpaneldata");
+const sessionDetail = require("./controllers/session_detail");
 const nodemailer = require("nodemailer");
 
 const app = express();
@@ -101,41 +105,105 @@ app.get("/api/agora-call/token", middleware, (req, res) => {
   return res.json({ token: token });
 });
 
+app.get("/api/agora-rtm/token", middleware, (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  const channel = req.query.channel;
+  if (!channel) {
+    return res.status(500).json({ error: "channel name missing" });
+  }
+  let role = RtcRole.PUBLISHER;
+  let expireTime = 3600;
+  const currentTime = Math.floor(Date.now() / 1000);
+  const privilegeExpireTime = currentTime + expireTime;
+  const token = RtmTokenBuilder.buildToken(
+    agora.APP_ID,
+    agora.APP_CERTIFICATE,
+    channel,
+    role,
+    privilegeExpireTime
+  );
+  return res.json({ token: token });
+});
 
 app.get("/api/firebase", (req, res) => {
-  return res.json(firebase)
+  return res.json(firebase);
 });
 //Routes
-app.get('/', (req, resp) => { resp.send('working ') })
-app.post('/api/signin', (req, resp) => { signin.handlesignin(req, resp, User) })
-app.post('/api/signup', (req, resp) => { signup.handlesignup(req, resp, User) })
-app.post('/api/userdata', (req, resp) => { userdata.userdata(req, resp, User) })
-app.post('/api/usersessions', (req, resp) => { usersessions.usersessions(req, resp, User, Sessions) })
-app.post('/api/get_doctors', (req, resp) => { getDoctor.getDoctor(req, resp, User) })
-app.post('/api/get_patient', (req, resp) => { getPatient.getPatient(req, resp, User) })
-app.post('/api/patient_details', (req, resp) => { signup.handlesignup(req, resp, User, Sessions) })
-app.post('/api/summary', (req, resp) => { getSummary.getSummary(req, resp) })
-app.get('/api/adminpaneldata', (req, resp) => { adminData.adminData(req, resp, User, Sessions) })
-app.post('/api/new_session', (req, resp) => { newSession.newSession(req, resp, User, Sessions) })
-app.post('/api/close_session', (req, resp) => { closeSession.closeSession(req, resp, User, Sessions) })
-app.post('/api/patient_feedback', (req, resp) => { patientFeedback.newPatientFeedback(req, resp, User, Sessions) })
-app.post('/api/doctor_feedback', (req, resp) => { doctorFeedback.newDoctorFeedback(req, resp, User, Sessions) })
-app.post('/api/add_presciption', (req, resp) => { addPresciption.newPrescription(req, resp, User, Sessions) })
-app.post('/api/add_notes', (req, resp) => { addNotes.newNotes(req, resp, User, Sessions) })
-app.post('/api/session_status', (req, resp) => { sessionStatus.sessionStatus(req, resp, User, Sessions) })
-app.post('/api/assign_doctor', (req, resp) => { assignDoctor.assignDoctor(req, resp, User) })
-app.post('/api/update_profile', (req, resp) => { updateProfile.updateProfile(req, resp, User) })
-app.post('/api/add_routine', (req, resp) => { newRoutine.newRoutine(req, resp, User) })
-app.post('/api/get_routine', (req, resp) => { userRoutines.userRoutines(req, resp, User) })
-app.post('/api/session_detail', (req, resp) => { sessionStatus.sessionStatus(req, resp, User, Sessions) })
-app.post('/api/session', (req, resp) => { sessionDetail.sessionDetail(req, resp, Sessions) })
-
+app.get("/", (req, resp) => {
+  resp.send("working ");
+});
+app.post("/api/signin", (req, resp) => {
+  signin.handlesignin(req, resp, User);
+});
+app.post("/api/signup", (req, resp) => {
+  signup.handlesignup(req, resp, User);
+});
+app.post("/api/userdata", (req, resp) => {
+  userdata.userdata(req, resp, User);
+});
+app.post("/api/usersessions", (req, resp) => {
+  usersessions.usersessions(req, resp, User, Sessions);
+});
+app.post("/api/get_doctors", (req, resp) => {
+  getDoctor.getDoctor(req, resp, User);
+});
+app.post("/api/get_patient", (req, resp) => {
+  getPatient.getPatient(req, resp, User);
+});
+app.post("/api/patient_details", (req, resp) => {
+  signup.handlesignup(req, resp, User, Sessions);
+});
+app.post("/api/summary", (req, resp) => {
+  getSummary.getSummary(req, resp);
+});
+app.get("/api/adminpaneldata", (req, resp) => {
+  adminData.adminData(req, resp, User, Sessions);
+});
+app.post("/api/new_session", (req, resp) => {
+  newSession.newSession(req, resp, User, Sessions);
+});
+app.post("/api/close_session", (req, resp) => {
+  closeSession.closeSession(req, resp, User, Sessions);
+});
+app.post("/api/patient_feedback", (req, resp) => {
+  patientFeedback.newPatientFeedback(req, resp, User, Sessions);
+});
+app.post("/api/doctor_feedback", (req, resp) => {
+  doctorFeedback.newDoctorFeedback(req, resp, User, Sessions);
+});
+app.post("/api/add_presciption", (req, resp) => {
+  addPresciption.newPrescription(req, resp, User, Sessions);
+});
+app.post("/api/add_notes", (req, resp) => {
+  addNotes.newNotes(req, resp, User, Sessions);
+});
+app.post("/api/session_status", (req, resp) => {
+  sessionStatus.sessionStatus(req, resp, User, Sessions);
+});
+app.post("/api/assign_doctor", (req, resp) => {
+  assignDoctor.assignDoctor(req, resp, User);
+});
+app.post("/api/update_profile", (req, resp) => {
+  updateProfile.updateProfile(req, resp, User);
+});
+app.post("/api/add_routine", (req, resp) => {
+  newRoutine.newRoutine(req, resp, User);
+});
+app.post("/api/get_routine", (req, resp) => {
+  userRoutines.userRoutines(req, resp, User);
+});
+app.post("/api/session_detail", (req, resp) => {
+  sessionStatus.sessionStatus(req, resp, User, Sessions);
+});
+app.post("/api/session", (req, resp) => {
+  sessionDetail.sessionDetail(req, resp, Sessions);
+});
 
 // cron-jobs
-cron.schedule('*/5 * * * *', async function () {
-  console.log('---------------------');
-  console.log('Running Cron Job');
-  var date = new Date()
+cron.schedule("*/5 * * * *", async function () {
+  console.log("---------------------");
+  console.log("Running Cron Job");
+  var date = new Date();
   var day = date.getDate();
   var month = date.getMonth() + 1;
   var year = date.getFullYear();
@@ -144,16 +212,21 @@ cron.schedule('*/5 * * * *', async function () {
   const upcoming_session = await Sessions.find({
     $and: [
       {
-        'date': today
+        date: today,
       },
       {
-        'upcoming': true
-      }
-    ]
-  }).sort({ 'time': 1 });
+        upcoming: true,
+      },
+    ],
+  }).sort({ time: 1 });
   for (let i = 0; i < upcoming_session.length; i++) {
-    if (Number(upcoming_session[i].time.split(":")[0]) === date.getHours()+5 && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes()-30<= 5 && Number(upcoming_session[i].time.split(":")[1])-date.getMinutes()-30 >= 0) {
-    
+    if (
+      Number(upcoming_session[i].time.split(":")[0]) === date.getHours() + 5 &&
+      Number(upcoming_session[i].time.split(":")[1]) - date.getMinutes() - 30 <=
+        5 &&
+      Number(upcoming_session[i].time.split(":")[1]) - date.getMinutes() - 30 >=
+        0
+    ) {
       // let transporter = nodemailer.createTransport({
       //   host: 'mail.YOURDOMAIN.com',
       //   port: 587,
@@ -177,12 +250,10 @@ cron.schedule('*/5 * * * *', async function () {
       //     if (error) {
       //         return console.log(error);
       //     }
-      //     console.log('Message sent: %s', info.messageId);   
+      //     console.log('Message sent: %s', info.messageId);
       //     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    
       //     res.render('contact', {msg:'Email has been sent'});
       // });
-    
     }
   }
 });
